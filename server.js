@@ -34,6 +34,16 @@ var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines
 mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI);
 
+const dbCheck = mongoose.connection;
+
+dbCheck.on('error', (error) => {
+  console.log('Mongoose Error: ', error);
+});
+
+dbCheck.once('open', () => {
+  console.log('Mongoose connection successful');
+});
+
 
 // Routes
 
@@ -50,10 +60,16 @@ app.get("/scrape", function (req, res) {
             var result = {};
 
             // Add the text and href of every link, and save them as properties of the result object
-            result.title = $(this)
+            result.Headline = $(this)
+                .children("h3")
                 .children("a")
                 .text();
-            result.link = $(this)
+            result.Summary = $(this)
+                .children("article")
+                .children("p")
+                .text()
+            result.URL = $(this)
+                .children("h3")
                 .children("a")
                 .attr("href");
 
