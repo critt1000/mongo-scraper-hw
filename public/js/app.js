@@ -1,19 +1,41 @@
-// Grab the articles as a json
-$("#scrapeButton").on("click", function() {
-    $.ajax({
-        method: "GET",
-        url: "/articles",
-        data: function (data) {
-            // For each one
-            for (var i = 0; i < data.length; i++) {
-                // Display the information on the page
-                $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>" + 
-            "<button id=saveButton>" + "save" + "</button>" );
-            };
-            return data;
-        }
-    })
+// Get the scraped articles and load to webpage
+$.getJSON('/articles', function (data) {
+
+    console.log(data);
+
+    for (let i = 0; i < data.length; i++) {
+        $('#articles-container').append(
+            '<div class="card" data-id=' + data[i]._id + '>' +
+            '<div class="card-header">' + data[i].headline + '</div>' +
+            '<div class="card-body">' +
+            '<p class="card-text">' +
+            data[i].summary +
+            '</p>' +
+            '<a href="#" class="btn btn-primary">' +
+            'Save Article' +
+            '</a>' +
+            '</div>' +
+            '</div>'
+        );
+    };
 });
+
+// Grab the articles as a json
+// $("#scrapeButton").on("click", function() {
+//     $.ajax({
+//         method: "GET",
+//         url: "/articles",
+//         data: function (data) {
+//             // For each one
+//             for (var i = 0; i < data.length; i++) {
+//                 // Display the information on the page
+//                 $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>" + 
+//             "<button id=saveButton>" + "save" + "</button>" );
+//             };
+//             return data;
+//         }
+//     })
+// });
 
 // //function to be called on click of button to gather list of articles
 // function getArticles() {
